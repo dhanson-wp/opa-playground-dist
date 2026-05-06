@@ -19,39 +19,43 @@ data persists across reloads. The whole thing runs in the user's browser.
 ## How it works
 
 ```
-┌──────────────────────────────────────────────────────────────────┐
-│  trunk (production code, build/ gitignored)                       │
-│       │                                                            │
-│       │  ./playground/build-and-push.sh                            │
-│       ▼                                                            │
-│  release-playground branch                                        │
-│       ├─ trunk's source                                            │
-│       └─ playground/dist/                                          │
-│             ├─ opa-platform.zip  (plugin form, with build/)        │
-│             └─ opa-theme.zip                                       │
-│                                                                    │
-│  Playground reads blueprint.json                                  │
-│       └─ installPlugin + installTheme from the dist/ ZIPs          │
-└──────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────┐
+│  dhanson-wp/opa-blog (PRIVATE)                                        │
+│       │  source code, build/ gitignored                                │
+│       │                                                                │
+│       │  ./playground/build-and-push.sh                                │
+│       ▼                                                                │
+│  dhanson-wp/opa-playground-dist (PUBLIC, satellite repo)              │
+│       ├─ blueprint.json                                                │
+│       └─ dist/                                                         │
+│             ├─ opa-platform.zip  (plugin form, with built SPA)         │
+│             └─ opa-theme.zip                                           │
+│                                                                        │
+│  Playground reads blueprint.json from the public satellite repo       │
+│       └─ installPlugin + installTheme from the dist/ ZIPs              │
+└──────────────────────────────────────────────────────────────────────┘
 ```
 
-Two pieces:
+Why a satellite repo? The main `opa-blog` repo is private. WordPress
+Playground Blueprint URLs must be publicly fetchable, so a separate public
+repo holds only the distribution artifacts. The main repo stays private.
 
-1. `playground/blueprint.json` — the recipe. Tells Playground which WP/PHP
-   to use, which plugin/theme to install, how to log the user in, and where
-   to land.
+Two pieces in the main repo:
+
+1. `playground/blueprint.json` — the recipe. Tells Playground which
+   WP/PHP to use, which plugin/theme to install, how to log the user in,
+   and where to land. This file is copied verbatim to the satellite repo
+   on each rebuild.
 2. `playground/build-and-push.sh` — packages the mu-plugin (with the SPA
-   `build/` directory baked in) as a regular WordPress plugin ZIP, packages
-   the Opa theme as a theme ZIP, force-pushes both to the long-lived
-   `release-playground` branch.
-
-The `release-playground` branch only exists for distribution. Treat it as
-ephemeral. Never base feature branches off it.
+   `build/` directory baked in) as a regular WordPress plugin ZIP,
+   packages the Opa theme as a theme ZIP, syncs both plus the Blueprint
+   to the satellite repo.
 
 ## Updating the tester link
 
-After any change to `mu-plugins/opa-platform/` or `themes/opa/` that you
-want testers to see, run from the repo root:
+After any change to `mu-plugins/opa-platform/`, `themes/opa/`, or
+`playground/blueprint.json` that you want testers to see, commit the
+change in the main repo, then run from the repo root:
 
 ```bash
 ./playground/build-and-push.sh
@@ -63,12 +67,12 @@ The script:
 2. Packages the mu-plugin as `playground/dist/opa-platform.zip` in plugin
    form (loader file + nested directory tree, no path edits needed).
 3. Packages the theme as `playground/dist/opa-theme.zip`.
-4. Switches to `release-playground` branch, hard-resets to current `trunk`,
-   commits the two new ZIPs, force-pushes.
-5. Returns you to the branch you started on.
+4. Clones the satellite repo to `~/opa-playground-dist` (first run only).
+5. Resets the satellite repo to its origin/main, copies in the new
+   Blueprint + ZIPs, commits, pushes.
 
-The Playground link itself never changes. Testers refreshing the link see
-the latest build.
+The Playground link itself never changes. Testers refreshing the link
+see the latest build within seconds of the push completing.
 
 ## Why a regular plugin, not a mu-plugin?
 
