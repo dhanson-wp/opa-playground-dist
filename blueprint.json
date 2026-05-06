@@ -16,8 +16,8 @@
 	},
 	"login": true,
 	"siteOptions": {
-		"blogname": "Derek on Opa",
-		"blogdescription": "Your space online."
+		"blogname": "Field Journal",
+		"blogdescription": "Plain notes from anywhere."
 	},
 	"steps": [
 		{
@@ -47,8 +47,8 @@
 		{
 			"step": "setSiteOptions",
 			"options": {
-				"blogname": "Derek on Opa",
-				"blogdescription": "Your space online.",
+				"blogname": "Field Journal",
+				"blogdescription": "Plain notes from anywhere.",
 				"default_ping_status": "closed",
 				"default_comment_status": "closed",
 				"show_on_front": "posts",
