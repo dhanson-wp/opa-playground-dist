@@ -21,16 +21,6 @@
 	},
 	"steps": [
 		{
-			"step": "installTheme",
-			"themeData": {
-				"resource": "url",
-				"url": "https://github.com/dhanson-wp/opa-playground-dist/raw/main/dist/opa-theme.zip"
-			},
-			"options": {
-				"activate": true
-			}
-		},
-		{
 			"step": "installPlugin",
 			"pluginData": {
 				"resource": "url",
