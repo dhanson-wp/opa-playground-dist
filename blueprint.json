@@ -1,0 +1,61 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"meta": {
+		"title": "Opa — try it",
+		"description": "A small, welcoming place to write online. This Playground spins up a fresh Opa instance in your browser. No account, no install. Click around, write a post, see what it feels like.",
+		"author": "opa",
+		"categories": ["WordPress", "Blogging"]
+	},
+	"preferredVersions": {
+		"php": "8.2",
+		"wp": "6.7"
+	},
+	"phpExtensionBundles": ["kitchen-sink"],
+	"features": {
+		"networking": true
+	},
+	"login": true,
+	"siteOptions": {
+		"blogname": "Derek on Opa",
+		"blogdescription": "Your space online."
+	},
+	"steps": [
+		{
+			"step": "installTheme",
+			"themeData": {
+				"resource": "url",
+				"url": "https://github.com/dhanson-wp/opa-playground-dist/raw/main/dist/opa-theme.zip"
+			},
+			"options": {
+				"activate": true
+			}
+		},
+		{
+			"step": "installPlugin",
+			"pluginData": {
+				"resource": "url",
+				"url": "https://github.com/dhanson-wp/opa-playground-dist/raw/main/dist/opa-platform.zip"
+			},
+			"options": {
+				"activate": true
+			}
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php require_once getenv('docroot') . '/wp-load.php'; update_option('default_pingback_flag', false); update_option('default_ping_status', 'closed'); update_option('default_comment_status', 'closed'); update_option('show_on_front', 'posts'); update_option('posts_per_page', 5); ?>"
+		},
+		{
+			"step": "setSiteOptions",
+			"options": {
+				"blogname": "Derek on Opa",
+				"blogdescription": "Your space online."
+			}
+		},
+		{
+			"step": "login",
+			"username": "admin",
+			"password": "password"
+		}
+	],
+	"landingPage": "/wp-admin/admin.php?page=opa"
+}
