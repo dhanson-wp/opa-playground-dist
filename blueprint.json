@@ -41,14 +41,14 @@
 			}
 		},
 		{
-			"step": "runPHP",
-			"code": "<?php require_once getenv('docroot') . '/wp-load.php'; update_option('default_pingback_flag', false); update_option('default_ping_status', 'closed'); update_option('default_comment_status', 'closed'); update_option('show_on_front', 'posts'); update_option('posts_per_page', 5); ?>"
-		},
-		{
 			"step": "setSiteOptions",
 			"options": {
 				"blogname": "Derek on Opa",
-				"blogdescription": "Your space online."
+				"blogdescription": "Your space online.",
+				"default_ping_status": "closed",
+				"default_comment_status": "closed",
+				"show_on_front": "posts",
+				"posts_per_page": 5
 			}
 		},
 		{
