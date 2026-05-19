@@ -1,0 +1,45 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"preferredVersions": {
+		"php": "8.3",
+		"wp": "latest"
+	},
+	"features": {
+		"networking": true
+	},
+	"landingPage": "/opa-alpha/",
+	"steps": [
+		{
+			"step": "defineWpConfigConsts",
+			"consts": {
+				"WP_ENVIRONMENT_TYPE": "local"
+			}
+		},
+		{
+			"step": "importWordPressFiles",
+			"wordPressFilesZip": {
+				"resource": "url",
+				"url": "https://github.com/dhanson-wp/opa-playground-dist/releases/download/alpha-preview-001/opa-alpha-playground.zip"
+			}
+		},
+		{
+			"step": "setSiteOptions",
+			"options": {
+				"blogname": "Opa Alpha",
+				"blogdescription": "Closed alpha sandbox"
+			}
+		},
+		{
+			"step": "activateTheme",
+			"themeFolderName": "opa-theme"
+		},
+		{
+			"step": "login",
+			"username": "admin"
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php require_once '/wordpress/wp-load.php'; flush_rewrite_rules();"
+		}
+	]
+}
