@@ -1,16 +1,21 @@
 {
 	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
 	"meta": {
-		"title": "Opa — try it",
+		"title": "Opa \u2014 try it",
 		"description": "A small, welcoming place to write online. This Playground spins up a fresh Opa instance in your browser. No account, no install. Click around, write a post, see what it feels like.",
 		"author": "opa",
-		"categories": ["WordPress", "Blogging"]
+		"categories": [
+			"WordPress",
+			"Blogging"
+		]
 	},
 	"preferredVersions": {
 		"php": "8.2",
 		"wp": "6.7"
 	},
-	"phpExtensionBundles": ["kitchen-sink"],
+	"phpExtensionBundles": [
+		"kitchen-sink"
+	],
 	"features": {
 		"networking": true
 	},
@@ -42,7 +47,7 @@
 		},
 		{
 			"step": "runPHP",
-			"code": "<?php require_once '/wordpress/wp-load.php'; foreach ( get_posts( array( 'post_type' => array( 'post', 'page' ), 'post_status' => 'any', 'numberposts' => -1 ) ) as $p ) { wp_delete_post( $p->ID, true ); } update_option( 'opa_external_signout_url', 'https://opa.blog/' ); ?>"
+			"code": "<?php require_once '/wordpress/wp-load.php'; foreach ( get_posts( array( 'post_type' => array( 'post', 'page' ), 'post_status' => 'any', 'numberposts' => -1 ) ) as $p ) { wp_delete_post( $p->ID, true ); } update_option( 'opa_external_signout_url', 'https://opa.blog/' ); if ( function_exists( 'opa_seed_welcome_post' ) ) { opa_seed_welcome_post(); } ?>"
 		},
 		{
 			"step": "setSiteOptions",
