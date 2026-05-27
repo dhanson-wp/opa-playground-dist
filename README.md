@@ -1,40 +1,20 @@
 # Opa — Playground
 
-Opa instance running in the browser. Send the link, get feedback in
-30 seconds. No accounts, no installs, no infra.
+Fast, disposable Opa instance running in the browser. Send the link, get
+feedback in 30 seconds. No accounts, no installs, no infra.
 
-## Active shared link (disposable)
+## Tester link
 
 ```
-https://playground.wordpress.net/?mode=seamless&blueprint-url=https://raw.githubusercontent.com/dhanson-wp/opa-playground-dist/main/blueprint.json
+https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/dhanson-wp/opa-playground-dist/main/blueprint.json
 ```
-
-This is the link being shared with alpha testers today. Each visit is a
-fresh disposable WordPress in WebAssembly + SQLite. Nothing persists across
-reloads.
 
 That URL boots a Playground, installs the Opa platform plugin and theme,
 logs in as `admin`, and lands the user at the Opa dashboard. Because the
 Playground starts with zero posts, the welcome overlay shows on first load.
 
-## Persistent variant (opt-in, rolled out via email)
-
-```
-https://playground.wordpress.net/?mode=seamless&storage=browser&blueprint-url=https://raw.githubusercontent.com/dhanson-wp/opa-playground-dist/main/blueprint.json
-```
-
-Same boot path, plus `storage=browser`. The WP install persists in the
-browser's OPFS (Origin Private File System) — tester closes the tab and
-returns days later on the same browser, picks up exactly where they left
-off. State is per-browser, not cross-device.
-
-Inside the SPA, Settings > Playground renders a small status card on this
-URL only (gated on the actual `storage=browser` param via
-`window.top.location.search`) so testers see "your changes are saved"
-only when it's true.
-
-When ready to roll out persistence to testers, email this URL out
-separately. The disposable URL above stays the default until then.
+Each visit is a fresh disposable WordPress in WebAssembly + SQLite. No
+data persists across reloads. The whole thing runs in the user's browser.
 
 ## How it works
 
