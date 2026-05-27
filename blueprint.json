@@ -10,8 +10,8 @@
 		]
 	},
 	"preferredVersions": {
-		"php": "8.2",
-		"wp": "6.7"
+		"php": "8.3",
+		"wp": "latest"
 	},
 	"phpExtensionBundles": [
 		"kitchen-sink"
@@ -34,8 +34,8 @@
 		{
 			"step": "installTheme",
 			"themeData": {
-				"resource": "wordpress.org/themes",
-				"slug": "twentytwentyfive"
+				"resource": "url",
+				"url": "https://downloads.wordpress.org/theme/twentytwentyfive.latest-stable.zip"
 			}
 		},
 		{
