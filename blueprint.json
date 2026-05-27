@@ -34,8 +34,8 @@
 		{
 			"step": "installTheme",
 			"themeData": {
-				"resource": "url",
-				"url": "https://downloads.wordpress.org/theme/twentytwentyfive.latest-stable.zip"
+				"resource": "wordpress.org/themes",
+				"slug": "twentytwentyfive"
 			}
 		},
 		{
