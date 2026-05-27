@@ -60,7 +60,7 @@
 		},
 		{
 			"step": "runPHP",
-			"code": "<?php require_once '/wordpress/wp-load.php'; if ( get_option( 'opa_playground_initialized' ) ) { update_option( 'opa_external_signout_url', 'https://opa.blog/' ); return; } foreach ( get_posts( array( 'post_type' => array( 'post', 'page' ), 'post_status' => 'any', 'numberposts' => -1 ) ) as $p ) { wp_delete_post( $p->ID, true ); } update_option( 'opa_external_signout_url', 'https://opa.blog/' ); if ( function_exists( 'opa_seed_welcome_post' ) ) { opa_seed_welcome_post(); } update_option( 'opa_playground_initialized', time() ); ?>"
+			"code": "<?php require_once '/wordpress/wp-load.php'; foreach ( get_posts( array( 'post_type' => array( 'post', 'page' ), 'post_status' => 'any', 'numberposts' => -1 ) ) as $p ) { wp_delete_post( $p->ID, true ); } update_option( 'opa_external_signout_url', 'https://opa.blog/' ); if ( function_exists( 'opa_seed_welcome_post' ) ) { opa_seed_welcome_post(); } ?>"
 		},
 		{
 			"step": "setSiteOptions",
