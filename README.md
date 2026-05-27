@@ -1,20 +1,30 @@
 # Opa — Playground
 
-Fast, disposable Opa instance running in the browser. Send the link, get
-feedback in 30 seconds. No accounts, no installs, no infra.
+Opa instance running in the browser, saved in the browser. Send the link,
+get feedback in 30 seconds. No accounts, no installs, no infra.
 
-## Tester link
+## Tester link (saves in your browser)
 
 ```
-https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/dhanson-wp/opa-playground-dist/main/blueprint.json
+https://playground.wordpress.net/?mode=seamless&storage=browser&blueprint-url=https://raw.githubusercontent.com/dhanson-wp/opa-playground-dist/main/blueprint.json
 ```
 
 That URL boots a Playground, installs the Opa platform plugin and theme,
 logs in as `admin`, and lands the user at the Opa dashboard. Because the
 Playground starts with zero posts, the welcome overlay shows on first load.
 
-Each visit is a fresh disposable WordPress in WebAssembly + SQLite. No
-data persists across reloads. The whole thing runs in the user's browser.
+With `storage=browser`, the WP install persists in the browser's OPFS
+(Origin Private File System). Tester closes the tab and returns days later
+on the same browser — picks up exactly where they left off. State is
+per-browser, not cross-device.
+
+## Fresh disposable link (for one-off demos)
+
+```
+https://playground.wordpress.net/?mode=seamless&blueprint-url=https://raw.githubusercontent.com/dhanson-wp/opa-playground-dist/main/blueprint.json
+```
+
+No `storage=browser` — every visit is a fresh disposable WordPress.
 
 ## How it works
 
