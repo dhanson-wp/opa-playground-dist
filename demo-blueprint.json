@@ -1,0 +1,82 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"meta": {
+		"title": "Opa — demo (seeded)",
+		"description": "A fully seeded Opa instance with a personal essay blog for demo and recording purposes.",
+		"author": "opa"
+	},
+	"preferredVersions": {
+		"php": "8.3",
+		"wp": "latest"
+	},
+	"phpExtensionBundles": [
+		"kitchen-sink"
+	],
+	"features": {
+		"networking": true
+	},
+	"login": true,
+	"steps": [
+		{
+			"step": "defineWpConfigConsts",
+			"consts": {
+				"WP_ENVIRONMENT_TYPE": "local"
+			}
+		},
+		{
+			"step": "installTheme",
+			"themeData": {
+				"resource": "wordpress.org/themes",
+				"slug": "twentytwentyfive"
+			}
+		},
+		{
+			"step": "installTheme",
+			"themeData": {
+				"resource": "url",
+				"url": "https://github.com/dhanson-wp/opa-playground-dist/raw/main/dist/opa-theme.zip"
+			},
+			"options": {
+				"activate": true
+			}
+		},
+		{
+			"step": "installPlugin",
+			"pluginData": {
+				"resource": "url",
+				"url": "https://github.com/dhanson-wp/opa-playground-dist/raw/main/dist/opa-platform.zip"
+			},
+			"options": {
+				"activate": true
+			}
+		},
+		{
+			"step": "setSiteOptions",
+			"options": {
+				"blogname": "The Quiet Hours",
+				"blogdescription": "Essays on writing, attention, and the long way home.",
+				"default_ping_status": "closed",
+				"default_comment_status": "closed",
+				"show_on_front": "posts",
+				"posts_per_page": 10
+			}
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php require_once '/wordpress/wp-load.php'; wp_update_user(array('ID'=>1,'display_name'=>'Mara Quinn','first_name'=>'Mara','last_name'=>'Quinn','user_nicename'=>'mara')); foreach(get_posts(array('post_type'=>array('post','page'),'post_status'=>'any','numberposts'=>-1)) as $p){wp_delete_post($p->ID,true);} $cats=array(); foreach(array('Essays','Craft','Notebook','Reading') as $c){$t=term_exists($c,'category');if(!$t){$t=wp_insert_term($c,'category');}$cats[$c]=is_array($t)?(int)$t['term_id']:(int)$t;} update_option('opa_seed_cats',$cats); echo 'setup done'; ?>"
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php require_once '/wordpress/wp-load.php'; $cats=get_option('opa_seed_cats'); $p=function($x){return '<!-- wp:paragraph --><p>'.$x.'</p><!-- /wp:paragraph -->';}; $h=function($x){return '<!-- wp:heading --><h2 class=\"wp-block-heading\">'.$x.'</h2><!-- /wp:heading -->';}; $q=function($x){return '<!-- wp:quote --><blockquote class=\"wp-block-quote\"><!-- wp:paragraph --><p>'.$x.'</p><!-- /wp:paragraph --></blockquote><!-- /wp:quote -->';}; $posts=array( array('Letting a draft rest','2025-12-18 09:10:00',$cats['Craft'],'Some pieces aren&#8217;t finished. They&#8217;re just resting, and resting is part of the work.',$p('I used to think a draft that stalled was a draft that failed. Now I keep a drawer, metaphorical and real, for the ones that need to sit.').$p('A week later I come back and the missing sentence is just there, waiting, like it had been all along.')), array('On starting before you&#8217;re ready','2026-01-12 07:45:00',$cats['Essays'],'Readiness is a story we tell ourselves to delay the only thing that helps: beginning.',$p('Nobody feels ready. The writers I admire most simply started, badly, and kept going until the badness wore off.').$q('You don&#8217;t have to see the whole staircase. You just have to take the first step.').$p('So this year I&#8217;m taking the step before the fear finishes its sentence.')), array('The morning pages experiment','2026-01-28 06:30:00',$cats['Craft'],'Thirty days of writing three pages before coffee. Here&#8217;s what actually changed.',$p('The point was never the pages. It was the permission to be boring on the way to being honest.').$p('By week three the first page was throat-clearing and the third page was the truth. I learned to wait for it.')), array('What I learned from rereading my old journals','2026-02-09 20:15:00',$cats['Notebook'],'The person who wrote them is a stranger I&#8217;m slowly learning to forgive.',$p('I expected to cringe. I did. But underneath the melodrama was someone paying ferocious attention, and I miss that.').$p('We don&#8217;t keep journals to remember. We keep them to notice we were here.')), array('A small defense of slowness','2026-02-24 08:05:00',$cats['Essays'],'Fast is a setting, not a virtue. Most of what matters arrives at its own pace.',$p('The internet rewards the quick take. The page rewards the long look. I&#8217;m trying to live more on the page.').$p('Slow isn&#8217;t the absence of ambition. Sometimes it&#8217;s the most stubborn form of it.')), array('Notes on finishing things','2026-03-11 13:40:00',$cats['Craft'],'Beginnings are seductive. Endings are where the real character of a writer shows.',$h('The last ten percent').$p('The last ten percent of anything is where I&#8217;m most tempted to quit. It&#8217;s also where the piece becomes itself.').$p('Finish it ugly. You can only fix what exists.')), array('The books that found me this winter','2026-03-30 19:25:00',$cats['Reading'],'Five books I didn&#8217;t choose so much as collide with, and what each one pried open.',$p('I don&#8217;t read to escape. I read to be interrupted, to have a sentence reach out and rearrange the furniture in my head.').$p('This winter the furniture moved a lot.')), array('Writing in the margins','2026-04-15 07:20:00',$cats['Notebook'],'My best thinking rarely happens on the main line. It happens in the margins.',$p('The margin is where I argue with the author, with myself, with the version of me who underlined this two years ago.').$p('Keep the margins wide. Leave room to disagree.')), array('On keeping a commonplace book','2026-05-02 10:50:00',$cats['Reading'],'A centuries-old habit that quietly made me a better reader and a calmer person.',$p('A commonplace book is just a place to keep the sentences you can&#8217;t bear to lose. Mine is half wisdom, half grocery list.').$p('Collecting other people&#8217;s words taught me the shape of my own.')), array('Why I write by hand first','2026-05-20 06:55:00',$cats['Craft'],'The screen wants speed. The pen wants thought. I need the pen to find out what I mean.',$p('By hand I can&#8217;t delete fast enough to hide from a bad idea. I have to sit with it, and sitting with it is the whole game.').$p('The keyboard is for the second draft. The first one belongs to the pen.')) ); foreach($posts as $d){wp_insert_post(array('post_title'=>$d[0],'post_status'=>'publish','post_type'=>'post','post_author'=>1,'post_date'=>$d[1],'post_date_gmt'=>$d[1],'post_excerpt'=>$d[3],'post_content'=>$d[4],'post_category'=>array($d[2]),'edit_date'=>true));} echo 'published 10'; ?>"
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php require_once '/wordpress/wp-load.php'; $cats=get_option('opa_seed_cats'); $p=function($x){return '<!-- wp:paragraph --><p>'.$x.'</p><!-- /wp:paragraph -->';}; $h=function($x){return '<!-- wp:heading --><h2 class=\"wp-block-heading\">'.$x.'</h2><!-- /wp:heading -->';}; $drafts=array( array('The year I stopped chasing productivity','2026-06-03 08:30:00',$cats['Essays'],$p('For a long time I measured my days in output. Words written, boxes checked, the small dopamine of a finished list.').$p('This year I tried a different measure: attention. Did I pay any? To the work, to a person, to the light at four in the afternoon?'),true,'Needs a real ending. Maybe cut the third section?'), array('Letters I never sent','2026-06-01 21:10:00',$cats['Notebook'],$p('There is a folder on my desk labeled later. It is full of letters I wrote and never sent, and I am starting to think the not-sending was the point.'),true,'Start from the second paragraph.'), array('A walking practice','2026-05-28 17:45:00',$cats['Craft'],$p('Most of my sentences are written with my feet. I walk until the knot loosens, then I come home and write down what the walk already knew.'),false,''), array('On quitting social media for a season','2026-05-24 11:20:00',$cats['Essays'],$p('I did not delete the apps to be virtuous. I deleted them because I missed being bored, and boredom is where my ideas have always lived.'),false,'Decide: is this preachy? Maybe soften the open.'), array('The shape of a good sentence','2026-05-19 07:05:00',$cats['Craft'],$h('Rhythm before meaning').$p('A good sentence has a spine. You can feel where it wants to bend and where it wants to stop, often before you know what it is trying to say.'),false,'Pull the Didion quote here.') ); foreach($drafts as $d){$id=wp_insert_post(array('post_title'=>$d[0],'post_status'=>'draft','post_type'=>'post','post_author'=>1,'post_date'=>$d[1],'post_date_gmt'=>$d[1],'post_content'=>$d[3],'post_category'=>array($d[2]),'edit_date'=>true)); if($d[4]){update_post_meta($id,'opa_draft_pinned',true);} if($d[5]!==''){update_post_meta($id,'opa_draft_note',$d[5]);}} echo 'drafted 5'; ?>"
+		},
+		{
+			"step": "login",
+			"username": "admin",
+			"password": "password"
+		}
+	]
+}
